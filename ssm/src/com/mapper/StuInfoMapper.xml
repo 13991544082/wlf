@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.StuInfoMapper">
+
+	<resultMap type="com.entity.StuInfo" id="stuInfoList">
+		<id property="id" column="id"/>
+		<result property="sname" column="sname"/>
+		<result property="sex" column="sex"/>
+		<result property="birthday" column="birthday"/>
+		<result property="gschool" column="gschool"/>
+		<result property="major" column="major"/>
+		<result property="phone" column="phone"/>
+		<result property="wechat" column="wechat"/>
+		<result property="gdate" column="gdate"/>
+		<result property="addr" column="addr"/>
+		<result property="classId" column="classId"/>
+	</resultMap>
+		
+	<!-- 查询所有学生 -->
+	<select id="findAllStuInfos" resultMap="stuInfoList">
+		select * from stuInfo
+	</select>
+	
+	<!-- 查询学生总数 -->
+	<select id="findCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select count(*) from stuInfo  where 1=1
+		<if test="sname !=null">
+			and sname like "%" #{sname} "%"
+		</if>
+		
+	</select>
+	
+	<!--  分页查询学生数据 -->
+	<select id="findByPageData" resultMap="stuInfoList">
+		select * from stuInfo where 1=1  
+		<if test="sname !=null">
+			and sname like "%" #{sname} "%"
+		</if>
+		 limit #{start},#{size}
+	</select>
+	
+	<!-- 添加学生 -->
+	<insert id="add" parameterType="com.entity.StuInfo">
+		insert into stuInfo values(null,#{sname},#{sex},#{birthday},#{gschool},#{major},#{phone},#{wechat},#{gdate},#{addr},#{classId})
+	</insert>
+	
+	<!-- 通过id查找学生 -->
+	<select id="findByIdStuInfo" resultType="com.entity.StuInfo">
+		select * from stuInfo where id=#{id}
+	</select>
+	
+	<!-- 通过id修改学生 -->
+	<update id="editStuInfo">
+		update stuInfo set sname=#{sname}, sex=#{sex},birthday=#{birthday},gschool=#{gschool},major=#{major},
+						   phone=#{phone},wechat=#{wechat},gdate=#{gdate},addr=#{addr},classId=#{classId}
+		where id=#{id}
+	</update>
+</mapper>
